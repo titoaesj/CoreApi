@@ -1,0 +1,31 @@
+version: "3.6"
+
+services:
+  app:
+    build: ./
+    container_name: coreapi
+    volumes:
+      - ./:/ktorProjects/CoreApi
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    networks:
+      - ktor-network
+    depends_on:
+      - database
+  database:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=coreapi
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    networks:
+      - ktor-network
+networks:
+  ktor-network:
+    driver: bridge
